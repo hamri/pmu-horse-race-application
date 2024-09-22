@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: PMU Horse Race API
+  description: |-
+    This contract describes API used to manage PMU horse races. In this version, only one API 
+    has been defined to handle creating new horse race.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: race
+    description: API to manage races (create, update, delete, search)
+paths:
+  /race:
+    post:
+      tags:
+        - race
+      description: Add a new race
+      operationId: addRace
+      requestBody:
+        description: Create a new race
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Race'
+        required: true
+      responses:
+        '200':
+          description: Race has been created successfully
+          content:
+            description: Created race
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Race'
+        '400':
+          description: The race is invalid (may be mandatory fields missing)
+        '422':
+          description: Validation exception
+        '500':
+          description: Unexpected error occurred in server side
+components:
+  schemas:
+    Race:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Race unique identifier
+          example: 10
+        date:
+          type: string
+          description: Race date
+          format: date-time
+        name:
+          type: string
+          description: Race name
+          example: "Prix d'Amérique"
+        horses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Horse'
+      required:
+        - name
+        - horses
+    Horse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Horse unique identifier
+          example: 9
+        numberInRace:
+          type: integer
+          format: int64
+          description: Number of the horse in the race
+          example: 3
+        name:
+          type: string
+          description: Horse name
+          example: "Horsy Dream"
+      required:
+        - name

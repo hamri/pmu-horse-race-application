@@ -1,0 +1,410 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <changeSet author="KEMM-DEV-TEAM" id="Create__kemm_flow_seq-1">
+    <comment>Create t_kemm_flow_seq sequence</comment>
+    <createSequence incrementBy="1" sequenceName="t_kemm_flow_seq" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_canonical_message_table">
+    <createTable tableName="t_kemm_canonical_message">
+      <column name="id_inbound_message" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="kemm_canonical_message_pkey"/>
+      </column>
+      <column name="mur" type="VARCHAR(35)"/>
+      <column name="trn" type="VARCHAR(35)"/>
+      <column name="uetr" type="VARCHAR(36)"/>
+      <column name="direction" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="amount" type="numeric(18, 2)"/>
+      <column name="currency" type="VARCHAR(3)"/>
+      <column name="input_message_type" type="VARCHAR(50)"/>
+      <column name="translation_status" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="global_status" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="type" type="VARCHAR(35)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_type" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sender_bic" type="VARCHAR(11)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="receiver_bic" type="VARCHAR(11)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="value_date" type="date"/>
+      <column name="creation_date" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="origin" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_idx_for_kemm_canonical_messages">
+    <comment>Add indexes to t_kemm_canonical_message table</comment>
+    <createIndex indexName="idx_global_status_t_kemm_message" tableName="t_kemm_canonical_message">
+      <column name="global_status"/>
+    </createIndex>
+    <createIndex indexName="idx_translation_status_t_kemm_message" tableName="t_kemm_canonical_message">
+      <column name="translation_status"/>
+    </createIndex>
+    <createIndex indexName="idx_direction_t_kemm_message" tableName="t_kemm_canonical_message">
+      <column name="direction"/>
+    </createIndex>
+    <createIndex indexName="idx_origin_t_kemm_message" tableName="t_kemm_canonical_message">
+      <column name="origin"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="0.0-t_kemm_partner">
+    <createSequence incrementBy="1" sequenceName="t_kemm_partner_seq" startValue="1000"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_partner_table">
+    <createTable tableName="t_kemm_partner">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="kemm_partner_pkey"/>
+      </column>
+      <column name="alias" type="VARCHAR(35)"/>
+      <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE" valueComputed="now()"/>
+      <column name="type" type="VARCHAR(35)"/>
+      <column name="description" type="VARCHAR(50)"/>
+      <column name="comments" type="VARCHAR(50)">
+      </column>
+      <column name="status" type="VARCHAR(35)"/>
+      <column name="input_message_type" type="VARCHAR(35)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_mq_partner_1_table">
+    <createTable tableName="t_kemm_mq_partner">
+      <column name="queue_name_in" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="queue_name_out" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reply_to_queue_name_out" type="VARCHAR(255)">
+      </column>
+      <column name="partner_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="t_flx_mq_partner_pkey"/>
+      </column>
+      <column name="kemm_mq_manager_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="KEMM-DEV-TEAM" id="0.0-t_mq_manager">
+    <createSequence incrementBy="1" sequenceName="T_KEMM_MQ_MANAGER_SEQ" startValue="1000"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_mq_manager_1_table">
+    <createTable tableName="t_kemm_mq_manager">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="kemm_mq_maanger_pkey"/>
+      </column>
+      <column name="channel" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="host" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="queue_manager" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="mq_password" type="VARCHAR(255)"/>
+      <column name="mq_user" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="port" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_message_1_table">
+    <createTable tableName="t_kemm_inbound_message">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="t_kemm_inbound_message_pkey"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content" type="TEXT"/>
+      <column name="error_trace" type="TEXT"/>
+      <column name="status" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="sha3_checksum" type="varchar(100)"/>
+      <column name="inbound_type" type="varchar(31)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="jms_message_source_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_idx_for_t_kemm_inbound_message">
+    <comment>Add indexes to t_kemm_inbound_message table</comment>
+
+    <createIndex indexName="idx_sha3_checksum_t_kemm_inbound_message" tableName="t_kemm_inbound_message">
+      <column name="sha3_checksum"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_message_source_seq_1_table">
+    <comment>Create T_KEMM_INBOUND_MESSAGE_SOURCE_SEQ sequence</comment>
+    <createSequence incrementBy="1" sequenceName="T_KEMM_INBOUND_MESSAGE_SOURCE_SEQ" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_message_source_1_table">
+    <comment>Create t_kemm_inbound_message_source table</comment>
+    <createTable tableName="t_kemm_inbound_message_source">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="t_kemm_inbound_message_source_pk"/>
+      </column>
+      <column name="version" type="BIGINT" defaultValueNumeric="0">
+        <constraints nullable="false"></constraints>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="partner_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="1607343729836-75">
+    <createSequence cacheSize="1" cycle="false" incrementBy="1"
+                    sequenceName="t_kemm_inbound_jms_message_property_seq" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_jms_message_property_1_table">
+    <createTable tableName="t_kemm_inbound_jms_message_property">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="t_kemm_inbound_jms_message_property_pkey"/>
+      </column>
+      <column name="property_name" type="VARCHAR(255)"/>
+      <column name="property_value" type="VARCHAR(255)"/>
+      <column name="inbound_jms_metadata_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_jms_meta_data_1_table">
+    <createTable tableName="t_kemm_inbound_jms_meta_data">
+      <column name="inbound_jms_message_source_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="jms_correlationid" type="VARCHAR(255)"/>
+      <column name="jms_delivery_mode" type="INTEGER"/>
+      <column name="jms_delivery_time" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="jms_expiration" type="BIGINT"/>
+      <column name="jms_messageid" type="VARCHAR(255)"/>
+      <column name="jms_priority" type="INTEGER"/>
+      <column name="jms_redelivered" type="BOOLEAN"/>
+      <column name="jms_timestamp" type="BIGINT"/>
+      <column name="jms_type" type="VARCHAR(255)"/>
+      <column name="channel" type="VARCHAR(255)"/>
+      <column name="queue" type="VARCHAR(255)"/>
+      <column name="queue_manager" type="VARCHAR(255)"/>
+      <column name="server" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="Add-t_flx_inbound_jms_meta_data_pk_1">
+    <comment>Add t_flx_inbound_jms_meta_data_pk primary key</comment>
+    <addPrimaryKey columnNames="inbound_jms_message_source_id" constraintName="t_kemm_inbound_jms_meta_data_pk"
+                   tableName="t_kemm_inbound_jms_meta_data"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_inbound_jms_message_source_table">
+    <comment>Create t_kemm_inbound_jms_message_source table</comment>
+    <createTable tableName="t_kemm_inbound_jms_message_source">
+      <column name="source_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="partner_id" type="BIGINT"/>
+      <column name="initial_source" type="int8"/>
+
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_fk__jms_message_source__source_2_table">
+    <comment>Add fk__jms_message_source__source ForeignKey</comment>
+    <addForeignKeyConstraint baseColumnNames="source_id"
+                             baseTableName="t_kemm_inbound_jms_message_source"
+                             constraintName="fk__jms_message_source__source"
+                             deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id"
+                             referencedTableName="t_kemm_inbound_message_source" validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="addPrimaryKey_fk__jms_message_source__source_3_table">
+    <addPrimaryKey columnNames="source_id" constraintName="t_kemm_inbound_jms_message_source_pk"
+                   tableName="t_kemm_inbound_jms_message_source"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_fk__inbound_jms_metadata__inbound_jms_message_source_3_table">
+    <comment>Add fk__inbound_jms_metadata__inbound_jms_message_source foreign key</comment>
+    <addForeignKeyConstraint baseColumnNames="inbound_jms_message_source_id"
+                             baseTableName="t_kemm_inbound_jms_meta_data"
+                             constraintName="fk__inbound_jms_metadata__inbound_jms_message_source"
+                             deferrable="false" initiallyDeferred="false" referencedColumnNames="source_id"
+                             referencedTableName="t_kemm_inbound_jms_message_source" validate="true"/>
+  </changeSet>
+
+
+
+  <!--  Add COA/COD report table -->
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_jms_report_seq">
+    <createSequence incrementBy="1" sequenceName="t_kemm_jms_report_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_kms_report_table">
+    <createTable tableName="t_kemm_jms_report">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="t_flx_jms_report_pk"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content" type="TEXT"/>
+      <column name="delivered_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="jms_correlation_id" type="VARCHAR(255)"/>
+      <column name="jms_message_id" type="VARCHAR(255)"/>
+      <column name="received_on_queue" type="VARCHAR(255)"/>
+      <column name="report_type" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="jms_feedback" type="int4"></column>
+      <column name="id_operation" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+
+  <!--  Add Outbound Message table -->
+  <changeSet author="FLX-DEV-TEAM" id="create_t_kemm_outbound_message_seq">
+    <comment>Create t_kemm_outbound_message_seq sequence</comment>
+    <createSequence minValue="1" sequenceName="t_kemm_outbound_message_seq" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="FLX-DEV-TEAM" id="create_t_kemm_send_mq_message_operation_table">
+    <createTable tableName="t_kemm_outbound_message">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="t_flx_send_mq_message_operation_pkey"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="message" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="id_partner" type="BIGINT"/>
+      <column name="message_format" type="VARCHAR(32)"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="FLX-DEV-TEAM" id="create_t_kemm_outbound_jms_user_properties_seq">
+    <comment>Create t_kemm_outbound_jms_user_properties_seq sequence</comment>
+    <createSequence minValue="1" sequenceName="t_kemm_outbound_jms_user_properties_seq" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="FLX-DEV-TEAM" id="create_t_kemm_outbound_jms_user_properties">
+    <createTable tableName="t_kemm_outbound_jms_user_properties">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="t_kemm_outbound_jms_user_properties_pkey"/>
+      </column>
+      <column name="property_name" type="VARCHAR(255)"/>
+      <column name="property_value" type="VARCHAR(255)"/>
+      <column name="id_outbound_message" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_canonical_message__inbound_message_2_table">
+    <addForeignKeyConstraint baseColumnNames="id_inbound_message" baseTableName="T_KEMM_CANONICAL_MESSAGE"
+                             constraintName="fk__canonical_message__inbound_message" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="id" referencedTableName="t_kemm_inbound_message"
+                             validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_fk__inbound_jms_message_source__partner_4_table">
+    <addForeignKeyConstraint baseColumnNames="partner_id" baseTableName="t_kemm_inbound_jms_message_source"
+                             constraintName="fk__inbound_jms_message_source__partner" deferrable="false"
+                             initiallyDeferred="false" referencedColumnNames="partner_id"
+                             referencedTableName="t_kemm_mq_partner" validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_fk__inbound_jms_message_initial_source _5_table">
+    <comment>Add fk__inbound_jms_message_initial_source foreign key</comment>
+    <addForeignKeyConstraint baseColumnNames="initial_source"
+                             baseTableName="t_kemm_inbound_jms_message_source"
+                             constraintName="fk__inbound_jms_message_initial_source"
+                             deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="source_id"
+                             referencedTableName="t_kemm_inbound_jms_message_source"
+                             validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_t_kemm_mq_manager_2_table">
+    <comment>Add fk__kemm_mq_maanger__source foreign key</comment>
+    <addForeignKeyConstraint baseColumnNames="kemm_mq_manager_id"
+                             baseTableName="T_KEMM_MQ_PARTNER"
+                             constraintName="fk__kemm_mq_maanger__source"
+                             deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+                             referencedTableName="T_KEMM_MQ_MANAGER" validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="add_fk__inbound_jms_property__inbound_meta_data_2_table">
+    <comment>Add fk__inbound_jms_property__inbound_meta_data foreign key</comment>
+    <addForeignKeyConstraint baseColumnNames="inbound_jms_metadata_id"
+                             baseTableName="t_kemm_inbound_jms_message_property"
+                             constraintName="fk__inbound_jms_property__inbound_meta_data"
+                             referencedColumnNames="inbound_jms_message_source_id"
+                             referencedTableName="t_kemm_inbound_jms_meta_data"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="t_kemm_mq_partner_2_table">
+    <addForeignKeyConstraint baseColumnNames="partner_id" baseTableName="t_kemm_mq_partner"
+                             constraintName="fk__mq_partner__partner" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                             referencedTableName="t_kemm_partner" validate="true"/>
+  </changeSet>
+
+  <changeSet author="KEMM-DEV-TEAM" id="t_kemm_inbound_message-add_fk__inbound_jms_message__source">
+    <addForeignKeyConstraint baseColumnNames="jms_message_source_id" baseTableName="t_kemm_inbound_message"
+                             constraintName="fk__inbound_jms_message__source" referencedColumnNames="source_id"
+                             referencedTableName="t_kemm_inbound_jms_message_source"/>
+  </changeSet>
+
+
+  <changeSet author="KEMM-DEV-TEAM" id="create_fk__jms_user_properties__outbound_message">
+    <addForeignKeyConstraint baseColumnNames="id_outbound_message" baseTableName="t_kemm_outbound_jms_user_properties"
+                             constraintName="fk__jms_user_properties__outbound_message"
+                             deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id"
+                             referencedTableName="t_kemm_outbound_message" validate="true"/>
+  </changeSet>
+
+</databaseChangeLog>

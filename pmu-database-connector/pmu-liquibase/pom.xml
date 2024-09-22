@@ -5,17 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pmu.horserace</groupId>
-        <artifactId>pmu-application-aggregator</artifactId>
+        <artifactId>pmu-database-connector</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
-
     <artifactId>pmu-liquibase</artifactId>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

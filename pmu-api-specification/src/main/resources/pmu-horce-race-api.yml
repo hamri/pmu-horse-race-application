@@ -52,6 +52,11 @@ components:
           type: string
           description: Race date
           format: date-time
+        numberAtDay:
+          type: integer
+          format: int64
+          description: Number of the race at day
+          example: 3
         name:
           type: string
           description: Race name

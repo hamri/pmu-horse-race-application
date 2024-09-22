@@ -1,0 +1,106 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <changeSet author="HAMRI" id="create__race_sequence">
+    <comment>Create race_sequence sequence</comment>
+    <createSequence incrementBy="1" sequenceName="race_sequence" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create__horse_race_sequence">
+    <comment>Create horse_race_sequence sequence</comment>
+    <createSequence incrementBy="1" sequenceName="horse_race_sequence" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create__horse_sequence">
+    <comment>Create horse_sequence sequence</comment>
+    <createSequence incrementBy="1" sequenceName="horse_sequence" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create__t_pmu_horse__table">
+    <createTable tableName="t_pmu_horse">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="horse_pkey"/>
+      </column>
+      <column name="name" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITH TIME ZONE"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="add_unique_constraint__uc_horse_name" author="HAMRI">
+    <addUniqueConstraint constraintName="uc_horse_name" tableName="t_pmu_horse" columnNames="name"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create__t_pmu_race__table">
+    <createTable tableName="t_pmu_race">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="race_pkey"/>
+      </column>
+      <column name="name" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="number_at_day" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="planned_at" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITH TIME ZONE"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="add_unique_constraint__uc_race_name_number_at_day_planned_at" author="HAMRI">
+    <addUniqueConstraint constraintName="uc_race_name_number_at_day_planned_at" tableName="t_pmu_race" columnNames="name,number_at_day,planned_at"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create__t_pmu_horse_race__table">
+    <createTable tableName="t_pmu_horse_race">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="horse_race_pkey"/>
+      </column>
+      <column name="number_in_race" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="horse_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="race_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creation_date" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="update_date" type="TIMESTAMP WITH TIME ZONE"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create_fk__t_pmu_horse_race__horse">
+    <addForeignKeyConstraint baseColumnNames="horse_id"
+                             baseTableName="t_pmu_horse_race"
+                             constraintName="fk__t_pmu_horse_race__horse"
+                             deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id"
+                             referencedTableName="t_pmu_horse" validate="true"/>
+  </changeSet>
+
+  <changeSet author="HAMRI" id="create_fk__t_pmu_horse_race__race">
+    <addForeignKeyConstraint baseColumnNames="race_id"
+                             baseTableName="t_pmu_horse_race"
+                             constraintName="fk__t_pmu_horse_race__race"
+                             deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id"
+                             referencedTableName="t_pmu_race" validate="true"/>
+  </changeSet>
+  <changeSet id="add_unique_constraint__uc_horse_race" author="HAMRI">
+    <addUniqueConstraint constraintName="uc_horse_race" tableName="t_pmu_horse_race" columnNames="horse_id,race_id"/>
+  </changeSet>
+
+</databaseChangeLog>

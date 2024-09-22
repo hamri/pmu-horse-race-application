@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Entity
 @Table(name = "T_PMU_HORSE_RACE", uniqueConstraints = {
-        @UniqueConstraint(name = "uc_horse_race", columnNames = {"horse", "race"})
+        @UniqueConstraint(name = "uc_horse_race", columnNames = {"horse_id", "race_id"})
 })
 public class HorseRaceEntity {
 
@@ -31,8 +31,10 @@ public class HorseRaceEntity {
     private RaceEntity race;
 
     @CreationTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false, updatable = false)
     private OffsetDateTime creationDate;
 
     @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updateDate;
 }

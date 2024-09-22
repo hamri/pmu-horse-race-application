@@ -30,9 +30,11 @@ public class RaceEntity {
     private OffsetDateTime plannedAt;
 
     @CreationTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false, updatable = false)
     private OffsetDateTime creationDate;
 
     @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updateDate;
 
     @OneToMany(mappedBy = "race", cascade = CascadeType.ALL, orphanRemoval = true)

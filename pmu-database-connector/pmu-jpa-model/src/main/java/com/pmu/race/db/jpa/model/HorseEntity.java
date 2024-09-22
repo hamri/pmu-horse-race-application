@@ -2,11 +2,13 @@ package com.pmu.race.db.jpa.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 
+@Data
 @Builder
 @Entity
 @Table(name = "T_PMU_HORSE", uniqueConstraints = {
@@ -23,9 +25,11 @@ public class HorseEntity {
     private String name;
 
     @CreationTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false, updatable = false)
     private OffsetDateTime creationDate;
 
     @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updateDate;
 
 }

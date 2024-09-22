@@ -9,6 +9,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>pmu-jpa-repository</artifactId>
+    <properties>
+        <embedded-postgres.version>2.0.7</embedded-postgres.version>
+        <embedded-database-spring-test.version>2.5.1</embedded-database-spring-test.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -22,10 +26,16 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- in-memory database  -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-postgres</artifactId>
+            <version>${embedded-postgres.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-database-spring-test</artifactId>
+            <version>${embedded-database-spring-test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

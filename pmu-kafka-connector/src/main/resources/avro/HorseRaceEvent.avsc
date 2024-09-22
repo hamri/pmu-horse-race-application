@@ -1,1 +1,11 @@
-
+{
+  "namespace": "com.pmu.race.avro",
+  "type": "record",
+  "name": "NewHorseRaceEvent",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    }
+  ]
+}

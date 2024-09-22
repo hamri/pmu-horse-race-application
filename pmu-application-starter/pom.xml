@@ -43,8 +43,29 @@
                 <version>7.8.0</version>
                 <executions>
                     <execution>
-
-                    </execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>
+                ${project.basedir}/src/main/resources/main-kemm-api-spec.yml
+              </inputSpec>
+              <modelNameSuffix>Dto</modelNameSuffix>
+              <generatorName>spring</generatorName>
+              <apiPackage>com.pmu.race.api</apiPackage>
+              <modelPackage>com.pmu.race.api.model</modelPackage>
+              <supportingFilesToGenerate>
+                ApiUtil.java
+              </supportingFilesToGenerate>
+              <configOptions>
+                <delegatePattern>true</delegatePattern>
+                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                <hateoas>true</hateoas>
+                <useSpringBoot3>true</useSpringBoot3>
+                <useSpringController>true</useSpringController>
+              </configOptions>
+            </configuration>
+          </execution>
                 </executions>
             </plugin>
         </plugins>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -10,14 +10,40 @@
     </parent>
     <artifactId>pmu-application-starter</artifactId>
 
+    <properties>
+        <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.pmu.horserace</groupId>
-            <artifactId>pmu-api-specification</artifactId>
+            <artifactId>pmu-jpa-repository</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pmu.horserace</groupId>
+            <artifactId>pmu-kafka-connector</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -40,32 +66,37 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.8.0</version>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.pmu.horserace</groupId>
+                        <artifactId>pmu-api-specification</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>
-                ${project.basedir}/src/main/resources/main-kemm-api-spec.yml
-              </inputSpec>
-              <modelNameSuffix>Dto</modelNameSuffix>
-              <generatorName>spring</generatorName>
-              <apiPackage>com.pmu.race.api</apiPackage>
-              <modelPackage>com.pmu.race.api.model</modelPackage>
-              <supportingFilesToGenerate>
-                ApiUtil.java
-              </supportingFilesToGenerate>
-              <configOptions>
-                <delegatePattern>true</delegatePattern>
-                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
-                <hateoas>true</hateoas>
-                <useSpringBoot3>true</useSpringBoot3>
-                <useSpringController>true</useSpringController>
-              </configOptions>
-            </configuration>
-          </execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>pmu-horse-race-api.yaml</inputSpec>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.pmu.race.api</apiPackage>
+                            <modelPackage>com.pmu.race.api.model</modelPackage>
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
+                            <configOptions>
+                                <delegatePattern>true</delegatePattern>
+                                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                                <hateoas>true</hateoas>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <useSpringController>true</useSpringController>
+                            </configOptions>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

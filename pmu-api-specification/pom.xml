@@ -9,4 +9,42 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>pmu-api-specification</artifactId>
+    <properties>
+        <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/pmu-horse-race-api.yaml</inputSpec>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.pmu.race.api</apiPackage>
+                            <modelPackage>com.pmu.race.api.model</modelPackage>
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
+                            <configOptions>
+                                <delegatePattern>true</delegatePattern>
+                                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                                <hateoas>true</hateoas>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <useSpringController>true</useSpringController>
+                            </configOptions>
+                            <dryRun>true</dryRun>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

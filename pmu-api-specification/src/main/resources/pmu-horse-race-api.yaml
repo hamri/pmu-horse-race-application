@@ -1,4 +1,5 @@
-openapi: 3.0.3
+---
+openapi: 3.0.2
 info:
   title: PMU Horse Race API
   description: |-
@@ -6,15 +7,15 @@ info:
     has been defined to handle creating new horse race.
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api/v1
-tags:
-  - name: race
-    description: API to manage races (create, update, delete, search)
+  - url: http://localhost:8080
+    variables:
+      basePath:
+        default: /pmu/api/v1
 paths:
-  /race:
+  '/race':
     post:
       tags:
-        - race
+        - Race
       description: Add a new race
       operationId: addRace
       requestBody:
@@ -28,7 +29,6 @@ paths:
         '200':
           description: Race has been created successfully
           content:
-            description: Created race
             application/json:
               schema:
                 $ref: '#/components/schemas/Race'

@@ -28,7 +28,7 @@ import java.util.List;
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"},
-        topics = {"${pmu.kafka.test.newRaceTopic}"})
+        topics = {"${pmu.kafka.raceTopic}"})
 @ActiveProfiles("test")
 public class RaceManagerIT {
 
@@ -38,7 +38,7 @@ public class RaceManagerIT {
     @Autowired
     private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
-    @Value("${pmu.kafka.test.newRaceTopic}")
+    @Value("${pmu.kafka.raceTopic}")
     private String newRaceTestTopic;
 
     @Autowired

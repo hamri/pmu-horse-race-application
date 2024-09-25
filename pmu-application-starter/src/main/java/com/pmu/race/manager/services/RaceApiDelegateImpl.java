@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.stream.IntStreams;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 @Slf4j
@@ -30,8 +32,19 @@ public class RaceApiDelegateImpl implements RaceApiDelegate {
     private final RaceRepository raceRepository;
     private final RaceKafkaProducer<NewHorseRaceEvent> producer;
 
+    @Value("${pmu.kafka.raceTopic}")
+    private String newRaceEventTopic;
+
     @Override
     public ResponseEntity<RaceDto> addRace(@Validated RaceDto raceDto) {
+        final RaceEntity createdRace = saveNewRace(raceDto);
+
+        publishNewRaceEvent(createdRace);
+
+        return RaceApiDelegate.super.addRace(raceDto);
+    }
+
+    private RaceEntity saveNewRace(final RaceDto raceDto) {
         final List<@Valid HorseDto> horses = raceDto.getHorses();
         if (CollectionUtils.isEmpty(horses) || horses.size() < 3) {
             throw new IllegalArgumentException("At least 3 horses are needed to start a race");
@@ -57,8 +70,12 @@ public class RaceApiDelegateImpl implements RaceApiDelegate {
         }).toList();
         race.setHorses(horsesRace);
 
-        final RaceEntity createdRace = raceRepository.save(race);
+        return raceRepository.save(race);
+    }
 
-        return RaceApiDelegate.super.addRace(raceDto);
+    private void publishNewRaceEvent(final RaceEntity createdRace) {
+        final Runnable onSuccess = () -> log.info("Event published");
+        final Consumer<Throwable> onFailure = t -> log.error("Error occurred while trying to publish the new race", t);
+        producer.produceEvent(createdRace.getName(), null, newRaceEventTopic, onSuccess, onFailure);
     }
 }

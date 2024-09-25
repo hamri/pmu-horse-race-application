@@ -22,11 +22,11 @@ public class HorseRaceEntity {
     @Column(nullable = false)
     private Integer numberInRace;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="horse_id", nullable=false, foreignKey = @ForeignKey(name = "fk__t_pmu_horse_race__horse"))
     private HorseEntity horse;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="race_id", nullable=false, foreignKey = @ForeignKey(name = "fk__t_pmu_horse_race__race"))
     private RaceEntity race;
 

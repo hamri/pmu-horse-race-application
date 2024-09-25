@@ -2,12 +2,14 @@ package com.pmu.race.db.jpa.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Data
 @Builder
 @Entity
 @Table(name = "T_PMU_RACE", uniqueConstraints = {

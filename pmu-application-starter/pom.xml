@@ -14,6 +14,9 @@
         <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
+        <embedded-postgres.version>2.0.7</embedded-postgres.version>
+        <embedded-database-spring-test.version>2.5.1</embedded-database-spring-test.version>
+        <guava.version>33.3.1-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -35,7 +38,13 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
 
+        <!-- Internal dependencies -->
         <dependency>
             <groupId>com.pmu.horserace</groupId>
             <artifactId>pmu-jpa-repository</artifactId>
@@ -45,6 +54,31 @@
             <groupId>com.pmu.horserace</groupId>
             <artifactId>pmu-kafka-connector</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-postgres</artifactId>
+            <version>${embedded-postgres.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-database-spring-test</artifactId>
+            <version>${embedded-database-spring-test.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.pmu.horserace</groupId>
+            <artifactId>pmu-liquibase</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

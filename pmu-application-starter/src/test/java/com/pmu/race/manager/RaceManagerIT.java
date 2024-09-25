@@ -58,7 +58,7 @@ public class RaceManagerIT {
         horseDto1.setName("H1");
 
         final HorseDto horseDto2 = new HorseDto();
-        horseDto1.setName("H2");
+        horseDto2.setName("H2");
 
         final HorseDto horseDto3 = new HorseDto();
         horseDto3.setName("H3");
